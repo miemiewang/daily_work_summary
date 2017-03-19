@@ -42,6 +42,8 @@ css:
             background-position: bottom;
         }
     }
+    
+注：如果头部viewport设置缩放，像素也会自动缩放，就不用通过渐变1像素了
 
 ###2017.2.17
 ####解决浮点数加减乘除运算的精度误差
@@ -106,6 +108,108 @@ css:
 				    } catch (g) {}
 				    return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), mul(c / d, Math.pow(10, f - e));
 				}
+
+###2017.2.20
+命令：lh 机器名 查看机器tag
+###2017.2.23
+将远程开发机文件拷到本地目录 
+在本地执行：scp -r wangyang@10.4.21.32:repos/ssad/webroot/resource/pgcpromotion_mobile ~/Desktop/
+###2017.2.27
+判断是否为空对象
+
+		function isEmptyObj(obj) {
+            for (var name in obj) {
+                return false;
+            }
+            return true;
+        }
+        
+###2017.3.9
+####滚动到底部加载问题：
+
+#####1.全局滚动
+
+		window.onscroll = function() {
+			var bHeight = document.body.clientHeight, // body对象高度,如果有滚动高度也包括
+			    wHeight = window.innerHeight, // 浏览器窗口的视口
+			    sTop = document.body.scrollTop; // body距离滚动顶部的距离
+			var isScrollBottom = bHeight - (wHeight + sTop) === 0 ? true : false;
+			if (isScrollBottom) {
+				执行加载
+			}
+		}
+#####2.局部滚动
+
+		document.getElementById('div1').onscroll = function() {
+			var sHeight = this.scrollHeight， // 元素内容高度，包括overflow:hidden不可见内容
+			    dHeight = this.clientHeight || this.offsetHeight || this.getBoundingClientRect().height， // 元素内容高度，不包括overflow:hidden不可见内容
+			    sTop = this.scrollTop; // 元素距离滚动顶部的距离
+			var isScrollBottom = sHeight - (dHeight + sTop) === 0 ? true : false;
+			if (isScrollBottom) {
+				执行加载
+			}
+		}
+注意：移动端下拉加载时，全局加载会有问题，所以一般绑定到具体元素上执行局部加载
+
+####获得元素内容的行数：
+
+	var H = div.clientHeight || div.offsetHeight;
+	var Line = div.currentStyle ? div.currenStyle['line-height'] : window.getComputedStyle(div, null)['line-height'];
+	H/parseFloat(Line) // 行数
+	
+####-webkit-line-clamp 限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他外来的WebKit属性。常见结合属性：
+
+* display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
+* 	-webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。
+* text-overflow，可以用来多行文本的情况下，用省略号“...”隐藏超出范围的文本 。
+
+超出部分以省略号表示：
+
+			可以设置多行
+			-webkit-line-clamp: 1;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			单行
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		
+###2017.3.13
+####git学习笔记
+git status -s 获得简短的输出
+AM前缀表示将文件添加到缓存后又有新的改动
+git checkout file 表示文件还未添加到缓存区时撤销修改
+git reset HEAD file 表示撤销已经添加到缓存区的文件
+git rm file 将文件从缓存区和工作目录中移除，彻底删除
+git branch --track [branch] [remote-branch] 新建一个分支，并与指定远程分支建立追踪关系
+git log --stat 显示commit历史以及每次commit发生变更的文件
+###2017.3.19
+####移动端踩坑总结
+#####1.软键盘的类型
+input输入框调起软键盘类别根据input的type决定，input[type=tel],input[type=number]可调起数字面板，但是在ios系统下有bug,需要加正则pattern='[0-9]*'或pattern="/d*"判断；当input[type=tel]时，安卓下仍然可以输入非数字类型
+#####2.不同系统中软键盘调起时的特点
+
+* iOS系统  
+a.如果控件在键盘高度上方的话,键盘是以一个浮层的方式弹出,并且将那个触发的控件推到键盘的上方.  
+b.如果控件在页面底部,键盘会覆盖该控件,系统会将整个页面向上推,直到将那个控件推到键盘上方为止.
+* Android系统  
+a.有一部分的Android的实现和iOS一样.(未验证）  
+b.另一部分，如果发现触发的input控件比键盘的高度低的时候，会自动将整个document的高度增加，增加到这个控件的高度超过键盘的高度为止.(未验证）  
+c.还有一部分,如果触发的input控件比键盘低，键盘会覆盖到控件上从而挡住控件
+
+解决方法：
+
+* ios系统
+如果ios系统下页面可滚动，最好将滚动设为局部滚动，这样可以避免键盘弹出时，控件会随着页面滚动，定位失效
+* Android系统
+由于安卓下键盘可能挡住控件，所以调起键盘时(input的focus事件)，需要将控件定位到页面最上方，使键盘尽量不挡住控件
+
+
+
+
+	
 
 
 
