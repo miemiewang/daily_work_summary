@@ -206,6 +206,34 @@ c.还有一部分,如果触发的input控件比键盘低，键盘会覆盖到控
 * Android系统
 由于安卓下键盘可能挡住控件，所以调起键盘时(input的focus事件)，需要将控件定位到页面最上方，使键盘尽量不挡住控件
 
+###2017.3.23
+####shell命令
+#####1.source 命令是 bash shell 的内置命令，从 C Shell 而来。source 命令的另一种写法是点符号，用法和 source 相同，从Bourne Shell而来。
+    source 命令可以强行让一个脚本去立即影响当前的环境。
+    source 命令会强制执行脚本中的全部命令,而忽略文件的权限。
+    source 命令通常用于重新执行刚修改的初始化文件，如 .bash_profile 和 .profile 等等。
+    source 命令可以影响执行脚本的父shell的环境，而 export 则只能影响其子shell的环境。
+    
+注：刚修改的文件需要source一下才能生效，如根目录下的.bashrc
+
+###2017.7.18
+
+* /etc/profile、/etc/bashrc、/etc/paths、~/.bash_profile 、~/.bash_login、 ~/.profile、~/.bashrc、~/.zshrc
+
+ 	* /etc/profile和/etc/paths是系统级别的，系统启动就会加载。/etc/profile中设定的变量(全局)的可以作用于任何用户,而~/.bashrc等中设定的变量(局部)只能继承/etc/profile中的变量,他们是"父子"关系.  
+ 
+ 	* /etc/bashrc:为每一个运行bash shell的用户执行此文件.当bash shell被打开时,该文件被读取.   
+ 
+ 	* ~/.bash_profile 、~/.bash_login、 ~/.profile是当前用户级的环境变量。后面3个按照从前往后的顺序读取，如果~/.bash_profile文件存在，则后面的几个文件就会被忽略不读了   
+
+ 	* ~/.bash_profile 是交互式、login 方式进入 bash 运行的。~/.bashrc 是交互式 non-login 方式进入 bash 运行的。通常二者设置大致相同，所以通常前者会调用后者
+ 		
+* 要想让python解释器找到自己编写的模块，则该模块必须PYTHONPATH上，否则在导入该模块时会出现找不到该模块的错误。想要python去哪个目录下找模块，就设置到哪个目录下。例如在.bashrc里定义：
+
+		export PYTHONPATH=~/repos
+
+
+
 
 
 
