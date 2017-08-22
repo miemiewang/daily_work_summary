@@ -231,6 +231,37 @@ c.还有一部分,如果触发的input控件比键盘低，键盘会覆盖到控
 * 要想让python解释器找到自己编写的模块，则该模块必须PYTHONPATH上，否则在导入该模块时会出现找不到该模块的错误。想要python去哪个目录下找模块，就设置到哪个目录下。例如在.bashrc里定义：
 
 		export PYTHONPATH=~/repos
+		
+###2017.7.26
+
+toString() 方法可把一个 Number 对象转换为一个字符串 
+ 
+		Number(123).toString() // '123'
+		new Number(123).toString() // '123'
+		123.toString() // false
+		
+千分位格式化
+		
+			function formatNumber(num) {
+				  if (isNaN(num)) {
+				    throw new TypeError("num is not a number");
+				  }
+				
+				  var groups = (/([\-\+]?)(\d*)(\.\d+)?/g).exec("" + num),
+				    mask = groups[1],            //符号位
+				    integers = (groups[2] || "").split(""), //整数部分
+				    decimal = groups[3] || "",       //小数部分
+				    remain = integers.length % 3;
+				
+				  var temp = integers.reduce(function(previousValue, currentValue, 						index) {
+				    if (index + 1 === remain || (index + 1 - remain) % 3 === 0) {
+				      return previousValue + currentValue + ",";
+				    } else {
+				      return previousValue + currentValue;
+				    }
+				  }, "").replace(/\,$/g, "");
+				  return mask + temp + decimal;
+			}
 
 
 
